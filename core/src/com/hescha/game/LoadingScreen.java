@@ -41,7 +41,7 @@ public class LoadingScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         glyphLayout = new GlyphLayout();
         bitmapFont = new BitmapFont();
-        assetManager.load("badlogic.jpg", Texture.class);
+//        assetManager.load("badlogic.jpg", Texture.class);
     }
 
     @Override
@@ -50,12 +50,19 @@ public class LoadingScreen extends ScreenAdapter {
             System.out.println("Resources are uploaded");
             game.setScreen(new GameScreen());
         } else {
-            ScreenUtils.clear(Color.BLACK);
+            batch.setProjectionMatrix(camera.projection);
+            batch.setTransformMatrix(camera.view);
+            ScreenUtils.clear(Color.GRAY);
             batch.begin();
             glyphLayout.setText(bitmapFont, "Progress: " + (int) (assetManager.getProgress() * 100));
             bitmapFont.draw(batch, glyphLayout, (viewport.getWorldWidth() - glyphLayout.width) / 2, viewport.getWorldHeight() / 2);
             batch.end();
             System.out.println("Uploading progress: " + assetManager.getProgress() * 100);
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 }
