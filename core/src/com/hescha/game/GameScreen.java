@@ -45,7 +45,7 @@ public class GameScreen extends ScreenAdapter {
         bitmapFont.setColor(Color.BLACK);
         bitmapFont.getData().setScale(5f);
 
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
         camera.update();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -106,7 +106,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
 
 
-        float cellSize = Gdx.graphics.getWidth() / 4f;
+        float cellSize = WORLD_WIDTH / 4f;
 
         // Отображение таблицы массива
         for (int i = 0; i < 4; i++) {
