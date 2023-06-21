@@ -111,14 +111,16 @@ public class GameScreen extends ScreenAdapter {
         // Отображение таблицы массива
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
+
                 TextureRegion cellTexture = cellTextures[i][j];
                 float x = j * cellSize;
                 float y = i * cellSize;
 
                 batch.draw(cellTexture, x, y, cellSize, cellSize);
-
-                glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
-                bitmapFont.draw(batch, glyphLayout, x + cellSize / 2 - glyphLayout.width / 2, y + cellSize / 2 + glyphLayout.height / 2);
+                if (game4096.getTiles()[i][j].getValue() != 0) {
+                    glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
+                    bitmapFont.draw(batch, glyphLayout, x + cellSize / 2 - glyphLayout.width / 2, y + cellSize / 2 + glyphLayout.height / 2);
+                }
             }
         }
         if (MyGestureListener.move != null) {
