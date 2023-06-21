@@ -3,9 +3,10 @@ package com.hescha.game;
 import com.badlogic.gdx.Game;
 
 public class GameFourZeroNineEight extends Game {
-
+    public static Game game;
     @Override
     public void create() {
-        setScreen(new LoadingScreen(this));
+        game = this;
+        setScreen(new MainMenuScreen());
     }
 }

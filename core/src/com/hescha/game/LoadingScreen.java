@@ -1,13 +1,11 @@
 package com.hescha.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,7 +17,6 @@ public class LoadingScreen extends ScreenAdapter {
     public static final AssetManager assetManager = new AssetManager();
     public static final float WORLD_WIDTH = 768;
     public static final float WORLD_HEIGHT = 1024;
-    private final GameFourZeroNineEight game;
 
     private GlyphLayout glyphLayout;
     private BitmapFont bitmapFont;
@@ -27,8 +24,7 @@ public class LoadingScreen extends ScreenAdapter {
     private Camera camera;
     private SpriteBatch batch;
 
-    public LoadingScreen(GameFourZeroNineEight game) {
-        this.game = game;
+    public LoadingScreen() {
     }
 
     @Override
@@ -41,14 +37,13 @@ public class LoadingScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         glyphLayout = new GlyphLayout();
         bitmapFont = new BitmapFont();
-//        assetManager.load("badlogic.jpg", Texture.class);
     }
 
     @Override
     public void render(float delta) {
         if (assetManager.update()) {
             System.out.println("Resources are uploaded");
-            game.setScreen(new GameScreen());
+            GameFourZeroNineEight.game.setScreen(new GameScreen());
         } else {
             batch.setProjectionMatrix(camera.projection);
             batch.setTransformMatrix(camera.view);
