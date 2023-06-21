@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.model.Game4096;
+import com.hescha.game.service.BlockColor;
 import com.hescha.game.service.Game4096Service;
 
 public class GameScreen extends ScreenAdapter {
@@ -72,7 +73,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Color getColorForValue(int value) {
-        return value % 4 == 0 ? Color.RED : value % 2 == 0 ? Color.GREEN : Color.YELLOW;
+        return BlockColor.getColor(value);
     }
 
     @Override
@@ -85,6 +86,16 @@ public class GameScreen extends ScreenAdapter {
         if (MyGestureListener.move != null) {
             game4096Service.moveTiles(game4096, MyGestureListener.move);
             MyGestureListener.move = null;
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                cellTextures[i][j].getTexture().dispose();
+                Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+                pixmap.setColor(BlockColor.getColor(game4096.getTiles()[i][j].getValue()));
+                pixmap.fill();
+                Texture texture = new Texture(pixmap);
+                cellTextures[i][j] = new TextureRegion(texture);
+            }
         }
     }
 
