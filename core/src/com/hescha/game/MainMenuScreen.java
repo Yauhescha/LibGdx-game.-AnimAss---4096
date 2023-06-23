@@ -2,6 +2,7 @@ package com.hescha.game;
 
 import static com.hescha.game.LoadingScreen.WORLD_HEIGHT;
 import static com.hescha.game.LoadingScreen.WORLD_WIDTH;
+import static com.hescha.game.LoadingScreen.assetManager;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,10 +47,10 @@ public class MainMenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
 
-        Texture x4x4 = new Texture(Gdx.files.internal("4x4.jpeg"));
-        Texture x5x5 = new Texture(Gdx.files.internal("5x5.jpeg"));
-        Texture x6x6 = new Texture(Gdx.files.internal("6x6.jpeg"));
-        Texture x8x8 = new Texture(Gdx.files.internal("8x8.jpeg"));
+        Texture x4x4 = assetManager.get("4x4.jpeg");
+        Texture x5x5 = assetManager.get("5x5.jpeg");
+        Texture x6x6 = assetManager.get("6x6.jpeg");
+        Texture x8x8 = assetManager.get("8x8.jpeg");
         Image b4x4 = new Image(x4x4);
         Image b5x5 = new Image(x5x5);
         Image b6x6 = new Image(x6x6);
@@ -96,8 +97,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Color color = new Color(238, 228, 219, 1);
-        ScreenUtils.clear(color);
+        ScreenUtils.clear(new Color(251f/255f, 208f/255f, 153f/255f, 1));
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
 

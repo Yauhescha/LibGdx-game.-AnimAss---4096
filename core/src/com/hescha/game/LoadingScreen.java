@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +38,13 @@ public class LoadingScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         glyphLayout = new GlyphLayout();
         bitmapFont = new BitmapFont();
+
+        assetManager.load("4x4.jpeg", Texture.class);
+        assetManager.load("5x5.jpeg", Texture.class);
+        assetManager.load("6x6.jpeg", Texture.class);
+        assetManager.load("8x8.jpeg", Texture.class);
+        assetManager.load("btnRestart.png", Texture.class);
+        assetManager.load("btnHome.png", Texture.class);
     }
 
     @Override
