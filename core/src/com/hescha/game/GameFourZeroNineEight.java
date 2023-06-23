@@ -7,6 +7,8 @@ public class GameFourZeroNineEight extends Game {
     @Override
     public void create() {
         game = this;
-        setScreen(new MainMenuScreen());
+
+
+        setScreen(new LoadingScreen());
     }
 }

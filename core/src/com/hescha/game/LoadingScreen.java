@@ -15,8 +15,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class LoadingScreen extends ScreenAdapter {
     public static final AssetManager assetManager = new AssetManager();
-    public static final float WORLD_WIDTH = 768;
-    public static final float WORLD_HEIGHT = 1024;
+    public static final float WORLD_WIDTH = 720;
+    public static final float WORLD_HEIGHT = 1280;
 
     private GlyphLayout glyphLayout;
     private BitmapFont bitmapFont;
@@ -43,7 +43,7 @@ public class LoadingScreen extends ScreenAdapter {
     public void render(float delta) {
         if (assetManager.update()) {
             System.out.println("Resources are uploaded");
-            GameFourZeroNineEight.game.setScreen(new GameScreen());
+            GameFourZeroNineEight.game.setScreen(new MainMenuScreen());
         } else {
             batch.setProjectionMatrix(camera.projection);
             batch.setTransformMatrix(camera.view);

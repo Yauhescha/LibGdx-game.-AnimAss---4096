@@ -8,21 +8,21 @@ import com.hescha.game.model.Tile;
 import java.util.Random;
 
 public class Game4096Service {
-    private static final int GRID_SIZE = 4;
 
-    public Game4096 newGame() {
+    public Game4096 newGame(int dimension) {
         Game4096 game = new Game4096();
-        game.setTiles(getStartTiles());
+        game.setTiles(getStartTiles(dimension));
         addRandomTile(game);
         addRandomTile(game);
         return game;
     }
 
+
     public void moveTiles(Game4096 game4096, Direction direction) {
         boolean moved = false;
-        for (int pass = 0; pass < GRID_SIZE; pass++) {
-            for (int i = 0; i < GRID_SIZE; i++) {
-                for (int j = 0; j < GRID_SIZE; j++) {
+        for (int pass = 0; pass < game4096.getTiles().length; pass++) {
+            for (int i = 0; i < game4096.getTiles().length; i++) {
+                for (int j = 0; j < game4096.getTiles().length; j++) {
                     int x, y;
                     switch (direction) {
                         case LEFT:
@@ -30,7 +30,7 @@ public class Game4096Service {
                             y = i;
                             break;
                         case RIGHT:
-                            x = GRID_SIZE - j - 1;
+                            x = game4096.getTiles().length - j - 1;
                             y = i;
                             break;
                         case UP:
@@ -39,7 +39,7 @@ public class Game4096Service {
                             break;
                         case DOWN:
                             x = i;
-                            y = GRID_SIZE - j - 1;
+                            y = game4096.getTiles().length - j - 1;
                             break;
                         default:
                             throw new IllegalStateException("Unexpected value: " + direction);
@@ -59,11 +59,11 @@ public class Game4096Service {
             return false;
         }
         Tile[][] tiles = game4096.getTiles();
-        for (int y = 0; y < GRID_SIZE; y++) {
-            for (int x = 0; x < GRID_SIZE; x++) {
+        for (int y = 0; y < game4096.getTiles().length; y++) {
+            for (int x = 0; x < game4096.getTiles().length; x++) {
                 Tile tile = tiles[y][x];
-                if ((x < GRID_SIZE - 1 && tile.getValue() == tiles[y][x + 1].getValue())
-                        || (y < GRID_SIZE - 1 && tile.getValue() == tiles[y + 1][x].getValue())) {
+                if ((x < game4096.getTiles().length - 1 && tile.getValue() == tiles[y][x + 1].getValue())
+                        || (y < game4096.getTiles().length - 1 && tile.getValue() == tiles[y + 1][x].getValue())) {
                     return false;
                 }
             }
@@ -72,8 +72,8 @@ public class Game4096Service {
     }
 
     public boolean isGameWon(Game4096 game4096) {
-        for (int y = 0; y < GRID_SIZE; y++) {
-            for (int x = 0; x < GRID_SIZE; x++) {
+        for (int y = 0; y < game4096.getTiles().length; y++) {
+            for (int x = 0; x < game4096.getTiles().length; x++) {
                 if (game4096.getTiles()[y][x].getValue() == 4096) {
                     return true;
                 }
@@ -82,10 +82,10 @@ public class Game4096Service {
         return false;
     }
 
-    private Tile[][] getStartTiles() {
-        Tile[][] tiles = new Tile[GRID_SIZE][GRID_SIZE];
-        for (int y = 0; y < GRID_SIZE; y++) {
-            for (int x = 0; x < GRID_SIZE; x++) {
+    private Tile[][] getStartTiles(int size) {
+        Tile[][] tiles = new Tile[size][size];
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 tiles[y][x] = new Tile();
             }
         }
@@ -102,8 +102,8 @@ public class Game4096Service {
         int position = new Random().nextInt(freeTiles);
         int currentPos = 0;
 
-        for (int i = 0; i < GRID_SIZE; i++) {
-            for (int j = 0; j < GRID_SIZE; j++) {
+        for (int i = 0; i < game4096.getTiles().length; i++) {
+            for (int j = 0; j < game4096.getTiles().length; j++) {
                 if (tiles[i][j].isEmpty()) {
                     if (currentPos == position) {
                         tiles[i][j].setValue(Math.random() < 0.9 ? 2 : 4);
@@ -117,8 +117,8 @@ public class Game4096Service {
 
     private int countFreeTiles(Game4096 game4096) {
         int freeTiles = 0;
-        for (int i = 0; i < GRID_SIZE; i++) {
-            for (int j = 0; j < GRID_SIZE; j++) {
+        for (int i = 0; i < game4096.getTiles().length; i++) {
+            for (int j = 0; j < game4096.getTiles().length; j++) {
                 if (game4096.getTiles()[i][j].isEmpty()) {
                     freeTiles++;
                 }
@@ -137,7 +137,7 @@ public class Game4096Service {
         int nextX = x + direction.getDx();
         int nextY = y + direction.getDy();
 
-        if (nextX < 0 || nextX >= GRID_SIZE || nextY < 0 || nextY >= GRID_SIZE) {
+        if (nextX < 0 || nextX >= game4096.getTiles().length || nextY < 0 || nextY >= game4096.getTiles().length) {
             return false;
         }
 

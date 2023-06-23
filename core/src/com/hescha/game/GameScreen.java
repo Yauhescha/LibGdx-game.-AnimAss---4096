@@ -27,7 +27,11 @@ import com.hescha.game.model.Game4096;
 import com.hescha.game.service.BlockColor;
 import com.hescha.game.service.Game4096Service;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class GameScreen extends ScreenAdapter {
+    private final int  dimension;
     private Viewport viewport;
     private OrthographicCamera camera;
 
@@ -42,13 +46,11 @@ public class GameScreen extends ScreenAdapter {
 
     private Game4096Service game4096Service;
     private Game4096 game4096;
-    TextButton exitButton;
+    private  TextButton exitButton;
 
     private Stage stage;
     @Override
     public void show() {
-
-
         batch = new SpriteBatch();
         glyphLayout = new GlyphLayout();
         bitmapFont = new BitmapFont();
@@ -61,16 +63,16 @@ public class GameScreen extends ScreenAdapter {
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         viewport.apply(true);
 
-        cellTextures = new TextureRegion[4][4];
+        cellTextures = new TextureRegion[dimension][dimension];
         // Создание текстур для каждого значения в массиве
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
                 cellTextures[i][j] = createColoredTexture(getColorForValue(i));
             }
         }
         game4096Service = new Game4096Service();
-        game4096 = game4096Service.newGame();
+        game4096 = game4096Service.newGame(dimension);
 
         BitmapFont font = new BitmapFont();
         font.getData().setScale(5f);
@@ -123,8 +125,8 @@ public class GameScreen extends ScreenAdapter {
             game4096Service.moveTiles(game4096, MyGestureListener.move);
             MyGestureListener.move = null;
         }
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
                 cellTextures[i][j].getTexture().dispose();
                 Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
                 pixmap.setColor(BlockColor.getColor(game4096.getTiles()[i][j].getValue()));
@@ -136,17 +138,17 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void draw() {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(new Color(239,231,196,1));
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
 
 
-        float cellSize = WORLD_WIDTH / 4f;
+        float cellSize = WORLD_WIDTH / dimension;
 
         // Отображение таблицы массива
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
 
                 TextureRegion cellTexture = cellTextures[i][j];
                 float x = j * cellSize;
@@ -184,8 +186,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
                 cellTextures[i][j].getTexture().dispose();
             }
         }
