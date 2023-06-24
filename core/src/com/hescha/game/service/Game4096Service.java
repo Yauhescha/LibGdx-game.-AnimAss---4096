@@ -1,19 +1,24 @@
 package com.hescha.game.service;
 
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hescha.game.model.Direction;
 import com.hescha.game.model.Game4096;
 import com.hescha.game.model.Tile;
 
 import java.util.Random;
 
+import static com.hescha.game.screen.LoadingScreen.WORLD_WIDTH;
+
 public class Game4096Service {
 
-    public Game4096 newGame(int dimension) {
+    public Game4096 newGame(Stage stage, ShapeRenderer shapeRenderer, int dimension) {
         Game4096 game = new Game4096();
-        game.setTiles(getStartTiles(dimension));
+        game.setTiles(getStartTiles(stage, shapeRenderer, dimension));
         addRandomTile(game);
         addRandomTile(game);
+        updateTileColor(game);
         return game;
     }
 
@@ -52,41 +57,35 @@ public class Game4096Service {
         if (moved) {
             addRandomTile(game4096);
         }
+        updateTileColor(game4096);
     }
 
-    public boolean isGameOver(Game4096 game4096) {
-        if (countFreeTiles(game4096) != 0) {
-            return false;
-        }
-        Tile[][] tiles = game4096.getTiles();
-        for (int y = 0; y < game4096.getTiles().length; y++) {
-            for (int x = 0; x < game4096.getTiles().length; x++) {
-                Tile tile = tiles[y][x];
-                if ((x < game4096.getTiles().length - 1 && tile.getValue() == tiles[y][x + 1].getValue())
-                        || (y < game4096.getTiles().length - 1 && tile.getValue() == tiles[y + 1][x].getValue())) {
-                    return false;
-                }
+    private void updateTileColor(Game4096 game4096) {
+        int length = game4096.getTiles().length;
+        int width = (int) (WORLD_WIDTH / length);
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                Tile tile = game4096.getTiles()[i][j];
+                tile.setColor(BlockColor.getColor(tile.getValue()));
+                tile.setX(width * j);
+                tile.setY(width * i);
             }
         }
-        return true;
     }
 
-    public boolean isGameWon(Game4096 game4096) {
-        for (int y = 0; y < game4096.getTiles().length; y++) {
-            for (int x = 0; x < game4096.getTiles().length; x++) {
-                if (game4096.getTiles()[y][x].getValue() == 4096) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private Tile[][] getStartTiles(int size) {
+    private Tile[][] getStartTiles(Stage stage, ShapeRenderer shapeRenderer, int size) {
+        int width = (int) (WORLD_WIDTH / size);
         Tile[][] tiles = new Tile[size][size];
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                tiles[y][x] = new Tile();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Tile tile = new Tile();
+                tile.setShapeRenderer(shapeRenderer);
+                tile.setWidth(width);
+                tile.setHeight(width);
+                tile.setX(j * width);
+                tile.setY(i * width);
+                stage.addActor(tile);
+                tiles[i][j] = tile;
             }
         }
         return tiles;

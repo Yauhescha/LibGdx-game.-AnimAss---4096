@@ -1,8 +1,8 @@
-package com.hescha.game;
+package com.hescha.game.screen;
 
-import static com.hescha.game.LoadingScreen.WORLD_HEIGHT;
-import static com.hescha.game.LoadingScreen.WORLD_WIDTH;
-import static com.hescha.game.LoadingScreen.assetManager;
+import static com.hescha.game.screen.LoadingScreen.WORLD_HEIGHT;
+import static com.hescha.game.screen.LoadingScreen.WORLD_WIDTH;
+import static com.hescha.game.screen.LoadingScreen.assetManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -11,12 +11,10 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,8 +25,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hescha.game.GameFourZeroNineEight;
+import com.hescha.game.MyGestureListener;
 import com.hescha.game.model.Game4096;
-import com.hescha.game.service.BlockColor;
 import com.hescha.game.service.Game4096Service;
 
 import lombok.RequiredArgsConstructor;
@@ -42,16 +41,13 @@ public class GameScreen extends ScreenAdapter {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
 
-    private TextureRegion[][] cellTextures;
-
     private GlyphLayout glyphLayout;
     private BitmapFont bitmapFont;
-
-    private String currentAction = "";
 
     private Game4096Service game4096Service;
     private Game4096 game4096;
     private Stage stage;
+    private Stage stage2;
     private int bestScore;
 
     @Override
@@ -63,9 +59,6 @@ public class GameScreen extends ScreenAdapter {
         bitmapFont.setColor(Color.BLACK);
         bitmapFont.getData().setScale(5f);
 
-        game4096Service = new Game4096Service();
-        game4096 = game4096Service.newGame(dimension);
-
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
         camera.update();
@@ -73,15 +66,10 @@ public class GameScreen extends ScreenAdapter {
         viewport.apply(true);
 
         stage = new Stage(viewport);
+        stage2 = new Stage(viewport);
 
-
-        cellTextures = new TextureRegion[dimension][dimension];
-
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                cellTextures[i][j] = createColoredTexture(getColorForValue(i));
-            }
-        }
+        game4096Service = new Game4096Service();
+        game4096 = game4096Service.newGame(stage2, shapeRenderer, dimension);
 
         BitmapFont font = new BitmapFont();
         font.getData().setScale(5f);
@@ -123,31 +111,21 @@ public class GameScreen extends ScreenAdapter {
         btnRestart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game4096 = game4096Service.newGame(dimension);
+                game4096 = game4096Service.newGame(stage, shapeRenderer, dimension);
             }
         });
         stage.addActor(btnRestart);
     }
 
-    private TextureRegion createColoredTexture(Color color) {
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        Texture texture = new Texture(pixmap);
-        return new TextureRegion(texture);
-    }
-
-    private Color getColorForValue(int value) {
-        return BlockColor.getColor(value);
-    }
-
     @Override
     public void render(float delta) {
         update();
-
         ScreenUtils.clear(new Color(251f / 255f, 208f / 255f, 153f / 255f, 1));
-        drawDebug();
-        draw();
+        stage.draw();
+        stage2.draw();
+//        drawDebug();
+        draw(delta);
+
     }
 
     private void update() {
@@ -156,23 +134,9 @@ public class GameScreen extends ScreenAdapter {
             MyGestureListener.move = null;
             saveScore(game4096.getScore());
         }
-        updateTexxtures();
     }
 
-    private void updateTexxtures() {
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                cellTextures[i][j].getTexture().dispose();
-                Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-                pixmap.setColor(BlockColor.getColor(game4096.getTiles()[i][j].getValue()));
-                pixmap.fill();
-                Texture texture = new Texture(pixmap);
-                cellTextures[i][j] = new TextureRegion(texture);
-            }
-        }
-    }
-
-    private void draw() {
+    private void draw(float delta) {
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
@@ -183,39 +147,30 @@ public class GameScreen extends ScreenAdapter {
         // Отображение таблицы массива
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-
-                TextureRegion cellTexture = cellTextures[i][j];
                 float x = j * (cellSize + 3) + 10;
                 float y = i * (cellSize + 3) + 10;
-
-                batch.draw(cellTexture, x, y, cellSize, cellSize);
                 if (game4096.getTiles()[i][j].getValue() != 0) {
                     glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
-                    bitmapFont.draw(batch, glyphLayout, x + cellSize / 2 - glyphLayout.width / 2, y + cellSize / 2 + glyphLayout.height / 2);
+                    bitmapFont.draw(batch, glyphLayout, x + cellSize / 2 - glyphLayout.width / 2,
+                            y + cellSize / 2 + glyphLayout.height / 2);
                 }
             }
         }
-        if (MyGestureListener.move != null) {
-            currentAction = MyGestureListener.move.name();
-        }
 
-        bitmapFont.getData().setScale(4f);
-        glyphLayout.setText(bitmapFont, currentAction);
-        bitmapFont.draw(batch, glyphLayout, 100, WORLD_HEIGHT - 100);
-
-        glyphLayout.setText(bitmapFont, "Score\r\n" + game4096.getScore());
-        bitmapFont.draw(batch, glyphLayout,
-                WORLD_WIDTH - glyphLayout.width - 30,
-                WORLD_HEIGHT - glyphLayout.height);
-
-        glyphLayout.setText(bitmapFont, "Best\r\n" + bestScore);
-        bitmapFont.draw(batch, glyphLayout,
-                WORLD_WIDTH - glyphLayout.width - 350,
-                WORLD_HEIGHT - glyphLayout.height);
-
+//        bitmapFont.getData().setScale(4f);
+//
+//        glyphLayout.setText(bitmapFont, "Score\r\n" + game4096.getScore());
+//        bitmapFont.draw(batch, glyphLayout,
+//                WORLD_WIDTH - glyphLayout.width - 30,
+//                WORLD_HEIGHT - glyphLayout.height);
+//
+//        glyphLayout.setText(bitmapFont, "Best\r\n" + bestScore);
+//        bitmapFont.draw(batch, glyphLayout,
+//                WORLD_WIDTH - glyphLayout.width - 350,
+//                WORLD_HEIGHT - glyphLayout.height);
+//
         batch.end();
 
-        stage.draw();
 
 
     }
@@ -250,11 +205,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                cellTextures[i][j].getTexture().dispose();
-            }
-        }
     }
 
     private void saveScore(int score) {

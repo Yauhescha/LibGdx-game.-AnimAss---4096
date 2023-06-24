@@ -1,8 +1,8 @@
-package com.hescha.game;
+package com.hescha.game.screen;
 
-import static com.hescha.game.LoadingScreen.WORLD_HEIGHT;
-import static com.hescha.game.LoadingScreen.WORLD_WIDTH;
-import static com.hescha.game.LoadingScreen.assetManager;
+import static com.hescha.game.screen.LoadingScreen.WORLD_HEIGHT;
+import static com.hescha.game.screen.LoadingScreen.WORLD_WIDTH;
+import static com.hescha.game.screen.LoadingScreen.assetManager;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,20 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hescha.game.GameFourZeroNineEight;
 
 public class MainMenuScreen extends ScreenAdapter {
     private Viewport viewport;

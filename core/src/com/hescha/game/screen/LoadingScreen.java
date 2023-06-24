@@ -1,4 +1,4 @@
-package com.hescha.game;
+package com.hescha.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hescha.game.GameFourZeroNineEight;
 
 public class LoadingScreen extends ScreenAdapter {
     public static final AssetManager assetManager = new AssetManager();
