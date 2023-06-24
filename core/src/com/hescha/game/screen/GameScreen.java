@@ -43,7 +43,6 @@ public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
 
     private SpriteBatch batch;
-    private ShapeRenderer shapeRenderer;
 
     private GlyphLayout glyphLayout;
     private BitmapFont bitmapFont;
@@ -56,18 +55,17 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        shapeRenderer = new ShapeRenderer();
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         glyphLayout = new GlyphLayout();
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("angrybirds-regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20; // установите нужный вам размер
-        bitmapFont = generator.generateFont(parameter); // font - это наш новый шрифт
-        generator.dispose(); // обязательно очистите за собой
+        parameter.size = 20;
+        bitmapFont = generator.generateFont(parameter);
+        generator.dispose();
 
         bitmapFont.setColor(Color.BLACK);
-//        bitmapFont.getData().setScale(5f);
 
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
@@ -134,7 +132,7 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(COLOR);
         stage.draw();
         stage2.draw();
-        draw(delta);
+        draw();
     }
 
     private void update() {
@@ -145,7 +143,7 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    private void draw(float delta) {
+    private void draw() {
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();

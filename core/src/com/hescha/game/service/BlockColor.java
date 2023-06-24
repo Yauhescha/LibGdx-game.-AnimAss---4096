@@ -21,6 +21,15 @@ public class BlockColor {
         colors.put(512, new Color(0.918f, 0.886f, 0.525f, 1));   // #ECE286
         colors.put(1024, new Color(0.914f, 0.882f, 0.431f, 1));  // #E8E16E
         colors.put(2048, new Color(0.910f, 0.878f, 0.337f, 1));  // #E8E156
+        colors.put(4096, new Color(0.800f, 0.200f, 0.200f, 1));   // Ярко-красный цвет
+        colors.put(8192, new Color(0.200f, 0.800f, 0.200f, 1));   // Ярко-зеленый цвет
+        colors.put(16384, new Color(0.200f, 0.200f, 0.800f, 1));  // Ярко-синий цвет
+        colors.put(32768, new Color(0.800f, 0.800f, 0.200f, 1));  // Ярко-желтый цвет
+        colors.put(65536, new Color(0.800f, 0.200f, 0.800f, 1));  // Ярко-фиолетовый цвет
+        colors.put(131072, new Color(0.200f, 0.800f, 0.800f, 1)); // Ярко-голубой цвет
+        colors.put(262144, new Color(0.800f, 0.500f, 0.200f, 1)); // Оранжевый цвет
+        colors.put(524288, new Color(0.800f, 0.800f, 0.800f, 1)); // Ярко-серый цвет
+        colors.put(1048576, new Color(1.000f, 1.000f, 1.000f, 1));// Белый цвет
     }
 
     public static Color getColor(int value) {
