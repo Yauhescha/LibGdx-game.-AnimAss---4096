@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,6 +35,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class GameScreen extends ScreenAdapter {
+    public static final String SCORE = "Score\r\n";
+    public static final String BEST = "Best\r\n";
+    public static final Color COLOR = new Color(251f / 255f, 208f / 255f, 153f / 255f, 1);
     private final int dimension;
     private Viewport viewport;
     private OrthographicCamera camera;
@@ -55,9 +59,15 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         glyphLayout = new GlyphLayout();
-        bitmapFont = new BitmapFont();
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("angrybirds-regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 20; // установите нужный вам размер
+        bitmapFont = generator.generateFont(parameter); // font - это наш новый шрифт
+        generator.dispose(); // обязательно очистите за собой
+
         bitmapFont.setColor(Color.BLACK);
-        bitmapFont.getData().setScale(5f);
+//        bitmapFont.getData().setScale(5f);
 
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
@@ -111,7 +121,8 @@ public class GameScreen extends ScreenAdapter {
         btnRestart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game4096 = game4096Service.newGame(stage, shapeRenderer, dimension);
+                dispose();
+                GameFourZeroNineEight.game.setScreen(new GameScreen(dimension));
             }
         });
         stage.addActor(btnRestart);
@@ -120,12 +131,10 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         update();
-        ScreenUtils.clear(new Color(251f / 255f, 208f / 255f, 153f / 255f, 1));
+        ScreenUtils.clear(COLOR);
         stage.draw();
         stage2.draw();
-//        drawDebug();
         draw(delta);
-
     }
 
     private void update() {
@@ -140,61 +149,46 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
+        drawTableNumbers();
+        drawScore();
+        batch.end();
+    }
 
+    private void drawScore() {
+        bitmapFont.getData().setScale(4f);
 
+        glyphLayout.setText(bitmapFont, SCORE + game4096.getScore());
+        bitmapFont.draw(batch, glyphLayout,
+                WORLD_WIDTH - glyphLayout.width - 30,
+                WORLD_HEIGHT - glyphLayout.height);
+
+        glyphLayout.setText(bitmapFont, BEST + bestScore);
+        bitmapFont.draw(batch, glyphLayout,
+                WORLD_WIDTH - glyphLayout.width - 350,
+                WORLD_HEIGHT - glyphLayout.height);
+    }
+
+    private void drawTableNumbers() {
         float cellSize = WORLD_WIDTH / dimension - 6;
-
         // Отображение таблицы массива
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
+                int scaleXY = 10;
+                bitmapFont.getData().setScale(scaleXY);
                 float x = j * (cellSize + 3) + 10;
                 float y = i * (cellSize + 3) + 10;
                 if (game4096.getTiles()[i][j].getValue() != 0) {
                     glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
+                    while (glyphLayout.width > cellSize || glyphLayout.height > cellSize) {
+                        scaleXY--;
+                        bitmapFont.getData().setScale(scaleXY);
+                        glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
+                    }
                     bitmapFont.draw(batch, glyphLayout, x + cellSize / 2 - glyphLayout.width / 2,
                             y + cellSize / 2 + glyphLayout.height / 2);
                 }
             }
         }
-
-//        bitmapFont.getData().setScale(4f);
-//
-//        glyphLayout.setText(bitmapFont, "Score\r\n" + game4096.getScore());
-//        bitmapFont.draw(batch, glyphLayout,
-//                WORLD_WIDTH - glyphLayout.width - 30,
-//                WORLD_HEIGHT - glyphLayout.height);
-//
-//        glyphLayout.setText(bitmapFont, "Best\r\n" + bestScore);
-//        bitmapFont.draw(batch, glyphLayout,
-//                WORLD_WIDTH - glyphLayout.width - 350,
-//                WORLD_HEIGHT - glyphLayout.height);
-//
-        batch.end();
-
-
-
-    }
-
-    private void drawDebug() {
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        glyphLayout.setText(bitmapFont, "Score\r\n" + game4096.getScore());
-        // Рисуем прямоугольник с координатами (x, y), шириной width и высотой height, цветом (r, g, b, a)
-
-        float width = 200;
-        float height = 150;
-        float r = 207f / 255f;
-        float g = 165f / 255f;
-        float b = 140f / 255f;
-        float a = 1.0f;
-        float x = WORLD_WIDTH - glyphLayout.width - 30;
-        float y = WORLD_HEIGHT - glyphLayout.height - height;
-        shapeRenderer.setColor(r, g, b, a);
-        shapeRenderer.rect(x, y, width, height);
-        shapeRenderer.rect(x - 330, y, width, height);
-
-        shapeRenderer.end();
     }
 
     @Override

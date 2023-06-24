@@ -40,10 +40,10 @@ public class LoadingScreen extends ScreenAdapter {
         glyphLayout = new GlyphLayout();
         bitmapFont = new BitmapFont();
 
-        assetManager.load("4x4.jpeg", Texture.class);
-        assetManager.load("5x5.jpeg", Texture.class);
-        assetManager.load("6x6.jpeg", Texture.class);
-        assetManager.load("8x8.jpeg", Texture.class);
+        assetManager.load("4x4.png", Texture.class);
+        assetManager.load("5x5.png", Texture.class);
+        assetManager.load("6x6.png", Texture.class);
+        assetManager.load("8x8.png", Texture.class);
         assetManager.load("btnRestart.png", Texture.class);
         assetManager.load("btnHome.png", Texture.class);
     }

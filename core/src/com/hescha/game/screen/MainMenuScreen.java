@@ -41,10 +41,10 @@ public class MainMenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
 
-        Texture x4x4 = assetManager.get("4x4.jpeg");
-        Texture x5x5 = assetManager.get("5x5.jpeg");
-        Texture x6x6 = assetManager.get("6x6.jpeg");
-        Texture x8x8 = assetManager.get("8x8.jpeg");
+        Texture x4x4 = assetManager.get("4x4.png");
+        Texture x5x5 = assetManager.get("5x5.png");
+        Texture x6x6 = assetManager.get("6x6.png");
+        Texture x8x8 = assetManager.get("8x8.png");
         Image b4x4 = new Image(x4x4);
         Image b5x5 = new Image(x5x5);
         Image b6x6 = new Image(x6x6);
@@ -53,10 +53,18 @@ public class MainMenuScreen extends ScreenAdapter {
         int padding = 10;
         float imageWidth = (int) b4x4.getWidth();
         float imageHeight = (int) b4x4.getHeight();
-        b4x4.setPosition((float) (centerX - imageWidth * 1.5 - padding), centerY - imageHeight - padding);
-        b5x5.setPosition((float) (centerX + imageWidth * 0.5 + padding), centerY - imageHeight - padding);
-        b6x6.setPosition((float) (centerX - imageWidth * 1.5 - padding), centerY + imageHeight + padding);
-        b8x8.setPosition((float) (centerX + imageWidth * 0.5 + padding), centerY + imageHeight + padding);
+        float newWidth = imageWidth * 0.65f;
+        float newHeight = imageHeight * 0.65f;
+
+        b4x4.setSize(newWidth, newHeight);
+        b5x5.setSize(newWidth, newHeight);
+        b6x6.setSize(newWidth, newHeight);
+        b8x8.setSize(newWidth, newHeight);
+
+        b4x4.setPosition((float) (centerX - newWidth - padding), centerY - newHeight - padding);
+        b5x5.setPosition((float) (centerX  + padding), centerY - newHeight - padding);
+        b6x6.setPosition((float) (centerX - newWidth - padding), centerY  + padding);
+        b8x8.setPosition((float) (centerX  + padding), centerY  + padding);
         b4x4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -91,7 +99,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(new Color(251f/255f, 208f/255f, 153f/255f, 1));
+        ScreenUtils.clear(new Color(251f / 255f, 208f / 255f, 153f / 255f, 1));
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
 
