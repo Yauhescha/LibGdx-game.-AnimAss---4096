@@ -1,6 +1,7 @@
 package com.hescha.game.model;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,6 +17,7 @@ public class Tile extends Actor {
     private ShapeRenderer shapeRenderer;
     private int value = 0;
     private Color color = BlockColor.getColor(-1);
+    private Texture texture;
 
     public boolean isEmpty() {
         return value == 0;
@@ -23,13 +25,21 @@ public class Tile extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(color);
-        shapeRenderer.rect(getX() + PADDING, getY() + PADDING*2,
-                getWidth() - PADDING, getHeight() - PADDING*2);
-        shapeRenderer.end();
+
+        if (texture == null) {
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(color);
+            shapeRenderer.rect(getX() + PADDING, getY() + PADDING * 2,
+                    getWidth() - PADDING, getHeight() - PADDING * 2);
+            shapeRenderer.end();
+        } else {
+            batch.draw(texture,
+                    getX() + PADDING, getY() + PADDING * 2,
+                    getWidth() - PADDING, getHeight() - PADDING * 2);
+        }
     }
+
 }
 
 

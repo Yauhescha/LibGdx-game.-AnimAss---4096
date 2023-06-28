@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hescha.game.model.Direction;
 import com.hescha.game.model.Game4096;
 import com.hescha.game.model.Tile;
+import com.hescha.game.screen.LevelType;
 
 import java.util.Random;
 
@@ -13,8 +14,9 @@ import static com.hescha.game.screen.LoadingScreen.WORLD_WIDTH;
 
 public class Game4096Service {
 
-    public Game4096 newGame(Stage stage, ShapeRenderer shapeRenderer, int dimension) {
+    public Game4096 newGame(Stage stage, ShapeRenderer shapeRenderer, int dimension, LevelType levelType) {
         Game4096 game = new Game4096();
+        game.setLevelType(levelType);
         game.setTiles(getStartTiles(stage, shapeRenderer, dimension));
         addRandomTile(game);
         addRandomTile(game);
@@ -66,9 +68,13 @@ public class Game4096Service {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {
                 Tile tile = game4096.getTiles()[i][j];
-                tile.setColor(BlockColor.getColor(tile.getValue()));
                 tile.setX(width * j);
                 tile.setY(width * i);
+                if (game4096.getLevelType() == LevelType.CLASSIC) {
+                    tile.setColor(BlockColor.getColor(tile.getValue()));
+                } else if (LevelType.BLACK == game4096.getLevelType()) {
+                    tile.setTexture(BlackTexture.getTexture(tile.getValue()));
+                }
             }
         }
     }

@@ -77,7 +77,7 @@ public class GameScreen extends ScreenAdapter {
         stage2 = new Stage(viewport);
 
         game4096Service = new Game4096Service();
-        game4096 = game4096Service.newGame(stage2, shapeRenderer, dimension);
+        game4096 = game4096Service.newGame(stage2, shapeRenderer, dimension, LevelType.BLACK);
 
         BitmapFont font = new BitmapFont();
         font.getData().setScale(5f);
