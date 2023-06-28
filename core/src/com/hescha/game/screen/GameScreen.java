@@ -52,6 +52,7 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage;
     private Stage stage2;
     private int bestScore;
+    private boolean showNumber = true;
 
     @Override
     public void show() {
@@ -77,7 +78,8 @@ public class GameScreen extends ScreenAdapter {
         stage2 = new Stage(viewport);
 
         game4096Service = new Game4096Service();
-        game4096 = game4096Service.newGame(stage2, shapeRenderer, dimension, LevelType.BLACK);
+        int levelType = Gdx.app.getPreferences("2048-game").getInteger("levelType");
+        game4096 = game4096Service.newGame(stage2, shapeRenderer, dimension, LevelType.values()[levelType]);
 
         BitmapFont font = new BitmapFont();
         font.getData().setScale(5f);
@@ -97,6 +99,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(multiplexer);
 
         bestScore = Gdx.app.getPreferences("2048-dimension-" + dimension).getInteger("score");
+        showNumber = Gdx.app.getPreferences("2048-game").getBoolean("showNumber", true);
     }
 
     private void initButtons() {
@@ -167,6 +170,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void drawTableNumbers() {
+        if (!showNumber) {
+            return;
+        }
+
         float cellSize = WORLD_WIDTH / dimension - 6;
         // Отображение таблицы массива
         for (int i = 0; i < dimension; i++) {
@@ -177,7 +184,7 @@ public class GameScreen extends ScreenAdapter {
                 float y = i * (cellSize + 3) + 10;
                 if (game4096.getTiles()[i][j].getValue() != 0) {
                     glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
-                    while (glyphLayout.width > cellSize || glyphLayout.height > cellSize) {
+                    while (glyphLayout.width > cellSize/2 || glyphLayout.height > cellSize) {
                         scaleXY--;
                         bitmapFont.getData().setScale(scaleXY);
                         glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");

@@ -49,6 +49,7 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("8x8.png", Texture.class);
         assetManager.load("btnRestart.png", Texture.class);
         assetManager.load("btnHome.png", Texture.class);
+        assetManager.load("settings.png", Texture.class);
 
 
         assetManager.load("black/0.jpg", Texture.class);

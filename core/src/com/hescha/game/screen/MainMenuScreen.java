@@ -45,26 +45,30 @@ public class MainMenuScreen extends ScreenAdapter {
         Texture x5x5 = assetManager.get("5x5.png");
         Texture x6x6 = assetManager.get("6x6.png");
         Texture x8x8 = assetManager.get("8x8.png");
+        Texture settings = assetManager.get("settings.png");
         Image b4x4 = new Image(x4x4);
         Image b5x5 = new Image(x5x5);
         Image b6x6 = new Image(x6x6);
         Image b8x8 = new Image(x8x8);
+        Image menu = new Image(settings);
 
         int padding = 10;
-        float imageWidth = (int) b4x4.getWidth();
-        float imageHeight = (int) b4x4.getHeight();
-        float newWidth = imageWidth * 0.65f;
-        float newHeight = imageHeight * 0.65f;
+        float newWidth = Gdx.graphics.getWidth()/3;
+        float newHeight =newWidth;
 
         b4x4.setSize(newWidth, newHeight);
         b5x5.setSize(newWidth, newHeight);
         b6x6.setSize(newWidth, newHeight);
         b8x8.setSize(newWidth, newHeight);
+        menu.setSize(newWidth, newHeight);
 
         b4x4.setPosition((float) (centerX - newWidth - padding), centerY - newHeight - padding);
         b5x5.setPosition((float) (centerX  + padding), centerY - newHeight - padding);
         b6x6.setPosition((float) (centerX - newWidth - padding), centerY  + padding);
         b8x8.setPosition((float) (centerX  + padding), centerY  + padding);
+
+        menu.setPosition((float) (centerX - newWidth/2), centerY - newHeight*2 - padding);
+
         b4x4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -89,11 +93,18 @@ public class MainMenuScreen extends ScreenAdapter {
                 GameFourZeroNineEight.game.setScreen(new GameScreen(8));
             }
         });
+        menu.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameFourZeroNineEight.game.setScreen(new SettingScreen());
+            }
+        });
 
         stage.addActor(b4x4);
         stage.addActor(b5x5);
         stage.addActor(b6x6);
         stage.addActor(b8x8);
+        stage.addActor(menu);
 
     }
 
