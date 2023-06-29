@@ -72,8 +72,8 @@ public class Game4096Service {
                 tile.setY(width * i);
                 if (game4096.getLevelType() == LevelType.CLASSIC) {
                     tile.setColor(BlockColor.getColor(tile.getValue()));
-                } else if (LevelType.BLACK == game4096.getLevelType()) {
-                    tile.setTexture(BlackTexture.getTexture(tile.getValue()));
+                } else {
+                    tile.setTexture(AssTexture.getTexture(game4096.getLevelType(), tile.getValue()));
                 }
             }
         }

@@ -52,7 +52,8 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("settings.png", Texture.class);
 
 
-        assetManager.load("black/0.jpg", Texture.class);
+        assetManager.load("0.jpg", Texture.class);
+
         assetManager.load("black/1.jpg", Texture.class);
         assetManager.load("black/2.jpg", Texture.class);
         assetManager.load("black/3.jpg", Texture.class);
@@ -73,6 +74,50 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load("black/18.jpg", Texture.class);
         assetManager.load("black/19.jpg", Texture.class);
         assetManager.load("black/20.jpg", Texture.class);
+
+
+        assetManager.load("amazon/1.jpg", Texture.class);
+        assetManager.load("amazon/2.jpg", Texture.class);
+        assetManager.load("amazon/3.jpg", Texture.class);
+        assetManager.load("amazon/4.jpg", Texture.class);
+        assetManager.load("amazon/5.jpg", Texture.class);
+        assetManager.load("amazon/6.jpg", Texture.class);
+        assetManager.load("amazon/7.jpg", Texture.class);
+        assetManager.load("amazon/8.jpg", Texture.class);
+        assetManager.load("amazon/9.jpg", Texture.class);
+        assetManager.load("amazon/10.jpg", Texture.class);
+        assetManager.load("amazon/11.jpg", Texture.class);
+        assetManager.load("amazon/12.jpg", Texture.class);
+        assetManager.load("amazon/13.jpg", Texture.class);
+        assetManager.load("amazon/14.jpg", Texture.class);
+        assetManager.load("amazon/15.jpg", Texture.class);
+        assetManager.load("amazon/16.jpg", Texture.class);
+        assetManager.load("amazon/17.jpg", Texture.class);
+        assetManager.load("amazon/18.jpg", Texture.class);
+        assetManager.load("amazon/19.jpg", Texture.class);
+        assetManager.load("amazon/20.jpg", Texture.class);
+
+
+        assetManager.load("cat/1.jpg", Texture.class);
+        assetManager.load("cat/2.jpg", Texture.class);
+        assetManager.load("cat/3.jpg", Texture.class);
+        assetManager.load("cat/4.jpg", Texture.class);
+        assetManager.load("cat/5.jpg", Texture.class);
+        assetManager.load("cat/6.jpg", Texture.class);
+        assetManager.load("cat/7.jpg", Texture.class);
+        assetManager.load("cat/8.jpg", Texture.class);
+        assetManager.load("cat/9.jpg", Texture.class);
+        assetManager.load("cat/10.jpg", Texture.class);
+        assetManager.load("cat/11.jpg", Texture.class);
+        assetManager.load("cat/12.jpg", Texture.class);
+        assetManager.load("cat/13.jpg", Texture.class);
+        assetManager.load("cat/14.jpg", Texture.class);
+        assetManager.load("cat/15.jpg", Texture.class);
+        assetManager.load("cat/16.jpg", Texture.class);
+        assetManager.load("cat/17.jpg", Texture.class);
+        assetManager.load("cat/18.jpg", Texture.class);
+        assetManager.load("cat/19.jpg", Texture.class);
+        assetManager.load("cat/20.jpg", Texture.class);
     }
 
     @Override
