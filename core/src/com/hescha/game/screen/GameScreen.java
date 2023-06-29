@@ -63,10 +63,14 @@ public class GameScreen extends ScreenAdapter {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("angrybirds-regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 20;
+        parameter.color = Color.BLACK;
+        parameter.borderWidth = 1;
+        parameter.borderColor = Color.WHITE;
         bitmapFont = generator.generateFont(parameter);
+
         generator.dispose();
 
-        bitmapFont.setColor(Color.BLACK);
+//        bitmapFont.setColor(Color.BLACK);
 
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
@@ -184,7 +188,7 @@ public class GameScreen extends ScreenAdapter {
                 float y = i * (cellSize + 3) + 10;
                 if (game4096.getTiles()[i][j].getValue() != 0) {
                     glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
-                    while (glyphLayout.width > cellSize/2 || glyphLayout.height > cellSize) {
+                    while (glyphLayout.width > cellSize || glyphLayout.height+glyphLayout.height/10 > cellSize) {
                         scaleXY--;
                         bitmapFont.getData().setScale(scaleXY);
                         glyphLayout.setText(bitmapFont, game4096.getTiles()[i][j].getValue() + "");
