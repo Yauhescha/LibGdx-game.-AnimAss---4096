@@ -139,11 +139,11 @@ public class SettingScreen extends ScreenAdapter {
         Table table = new Table();
         table.setFillParent(true);
         table.center();
-        table.add(label).padBottom(10);
+        table.add(label).pad(10).row();;
         table.row();
-        table.add(selboxServer).width(Gdx.graphics.getWidth()).padBottom(10);
+        table.add(selboxServer).width(Gdx.graphics.getWidth()/2).pad(50).row();
         table.row();
-        table.add(checkBox).padBottom(100);
+        table.add(checkBox).pad(100).row();;
         table.row();
         table.add(backButton);
         stage.addActor(table);

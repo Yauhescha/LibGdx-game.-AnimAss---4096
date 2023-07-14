@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Tile extends Actor {
-    private static final int PADDING = 5;
+    private static final int PADDING = 4;
     private ShapeRenderer shapeRenderer;
     private int value = 0;
     private Color color = BlockColor.getColor(-1);
@@ -30,8 +30,8 @@ public class Tile extends Actor {
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(color);
-            shapeRenderer.rect(getX() + PADDING, getY() + PADDING * 2,
-                    getWidth() - PADDING, getHeight() - PADDING * 2);
+            shapeRenderer.rect(getX() + PADDING, getY() + PADDING,
+                    getWidth() - PADDING, getHeight() - PADDING );
             shapeRenderer.end();
         } else {
             batch.draw(texture,
